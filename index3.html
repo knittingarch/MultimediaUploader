@@ -1,0 +1,217 @@
+<!-- Dimagi Media Uploader Project August 17-September ?? -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+
+  <style>
+  h1 {
+    display: block;
+    border-bottom: 1px solid #ddd;
+  }
+  #buttons {
+    /*background-color: yellow;*/
+  }
+
+  .btn-group-label {
+    /*background-color: blue;*/
+    display: inline-block;
+    padding-right: 15px;
+  }
+  .btn-group {
+    /*background-color: orange;*/
+  }
+  .btn.btn-menu {
+    background-color: #eee;
+    color: #000;
+    border-color: #ccc;
+  }
+  .btn.btn-menu:hover {
+    background-color: #ccc;
+    border-color: #bbb;
+  }
+  .image-uploader {
+    border: 1px solid #ddd;
+    background-color: #eee;
+    height: 200px;
+    border-radius: 10px;
+    margin-top: 20px;
+    position: relative;
+  }
+  .image-inner {
+    /*background-color: yellow;*/
+    margin: 50px 30px 30px;
+  }
+  .image-title {
+    /*background-color: blue;*/
+    display: inline-block;
+  }
+  .image-preview {
+    font-size: 5em;
+  }
+  .image-modal-launch {
+    /*background-color: yellow;*/
+  }
+  .glyphicon-asterisk {
+    font-size: 0.6em;
+  }
+  .close-uploader {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+  </style>
+  <title>Media Uploader</title>
+</head>
+
+<body>
+  <h1>Media</h1>
+  
+  <div class="container">
+    <div id="buttons" class="row">
+      <div class="btn-group-label col-sm-3">Add Multimedia</div>
+        <div id="btn-menu" class="btn-group btn-group-sm col-sm-9">
+          <!-- <button onclick="" type="button" id="image-btn" class="btn btn-menu">
+            <span class="glyphicon glyphicon-picture"></span>
+            image
+          </button>
+          <button type="button" id="audio-btn" class="btn btn-menu">
+            <span class="glyphicon glyphicon-volume-up"></span>
+            audio
+          </button>
+          <button type="button" id="video-btn" class="btn btn-menu">
+            <span class="glyphicon glyphicon-facetime-video"></span>
+            video
+          </button>
+          <button type="button" id="video-inline-btn" class="btn btn-menu">
+            <span class="glyphicon glyphicon-play"></span>
+            video-inline
+          </button>
+          <button type="button" id="expanded-audio-btn" class="btn btn-menu">
+            <span class="glyphicon glyphicon-volume-up"></span>
+            expanded-audio
+          </button> -->
+        </div>
+    </div>
+  </div>
+
+<!--   <div class="container">
+    <div class="row">
+      <div id="div1"></div>
+    </div>
+  </div> -->
+
+  <div id="div1" class="container">
+    <div class="row image-inner">
+      <p class="image-title col-sm-3">image</p>
+      <span class="image-preview glyphicon glyphicon-picture col-sm-3"></span>
+      <div class="image-modal-launch col-sm-3"><button class="button btn-sm">Upload Image</button></div>
+      <div class="image-show-path col-sm-3"><button class="button btn-sm"><span class="glyphicon glyphicon-asterisk"></span>Adv.: Show Path</button></div>
+    </div>
+    <div class="close-uploader"><button class="remove-box btn btn-sm btn-danger">x</button></div>
+  </div>
+
+  <script>
+  
+    // var button = document.querySelector("button");
+    // button.addEventListener('click', function(){
+    //   button.innerHTML = "tempo";}, false);
+
+    // button.onclick = function() {
+    //   button.innerHTML = "tempo";
+    // };
+
+    // var buttons = document.querySelectorAll("button");
+  // buttons.forEach(
+  //   function(button, index, buttons) {
+  //     console.log("Huzzah! I clicked on " + button + ", which is number " + index + " of " + buttons.length);
+  // });
+
+  // WORKING CODE
+
+    var buttons = ['image', 'audio', 'video', 'video-inline', 'expanded-audio'];
+    buttonTemplate = _.template('<button onclick="" type="button" id="image-btn" class="btn btn-menu"><span class="glyphicon glyphicon-picture"></span> <%= button %></button>'), content = '';
+    _.each(buttons, function(button, index, buttons) {
+      content += buttonTemplate({
+        button: button
+      });
+
+    });
+
+    var container = document.getElementById('btn-menu');
+    container.innerHTML = content;
+
+
+var menuItems = [
+    {"text": 'image', "glyphicon": 'glyphicon glyphicon-picture'},
+    {"text": 'audio', "glyphicon": 'glyphicon glyphicon-volume-up'},
+    {"text": 'video', "glyphicon": 'glyphicon glyphicon-facetime-video'},
+    {"text": 'video-inline', "glyphicon": 'glyphicon glyphicon-play'},
+    {"text": 'expanded-audio', "glyphicon": 'glyphicon glyphicon-volume-up'},
+    ];
+
+    // Create button menu
+    buttonTemplate = _.template('<button onclick="" type="button" id="<%= text %>-btn" class="btn btn-menu"><span class="<%= glyphicon %>"></span> <%= text %></button>'), content = '';
+    nodeTemplate = _.template('<div class="row node-inner"><p class="<%= text %>-title col-sm-3"><%= text %></p><span class="node-preview col-sm-3 <%= glyphicon %>"></span><div class="node-modal-launch col-sm-3"><button class="button btn-sm">Upload Image</button></div><div class="node-show-path col-sm-3"><button class="button btn-sm"><span class="glyphicon glyphicon-asterisk"></span>Adv.: Show Path</button></div></div>'), content2 = '';
+
+    _.each(menuItems, function(menuItem, index, menuItems) {
+      content += buttonTemplate({
+        text: menuItem["text"],
+        glyphicon: menuItem["glyphicon"]
+      });
+      content2 += nodeTemplate({
+        text: menuItem["text"],
+        glyphicon: menuItem["glyphicon"]
+      });
+    });
+
+    var container = document.getElementById('btn-menu');
+    container.innerHTML = content;
+    var container2 = document.getElementById('div1');
+    container2.innerHTML = content2;
+
+    // function addElement() {
+    //   var newDiv = document.createElement('div');
+    //   var newContent = document.createTextNode("Hola, como estas?");
+    //   newDiv.appendChild(newContent);
+    // };
+    var button = document.querySelector("button");
+    button.addEventListener('click', function(){
+      var newDiv = document.createElement('div');
+      newDiv.setAttribute("style", "border: 1px solid #eee; margin: 20px; padding: 10px;");
+      var newContent = document.createTextNode("Hola, como estas?");
+      newDiv.appendChild(newContent);
+      var currentDiv = document.getElementById('div1');
+      document.body.insertBefore(newDiv, currentDiv)
+      }, false);
+
+    // // Create Node for each media type
+    // // Figure out how to only show the box for the media type requested
+    
+    // var button = document.querySelector("button");
+    // button.addEventListener('click', function(){
+    //   var newDiv = document.createElement('div');
+    //   newDiv.setAttribute("style", "border: 1px solid #eee; margin: 20px; padding: 10px;");
+    //   newDiv.innerHTML = content2;
+    //   var currentDiv = document.getElementById('div1');
+    //   document.body.insertBefore(newDiv, currentDiv)
+    //   }, false);
+
+
+  </script>
+
+    <!-- <input id="audio-upload" type="file" name="audio-upload" accept="audio/*" capture="microphone">
+    <input id="image-upload" type="file" name="image-upload" accept="image/*" capture="camera">
+    <input id="input" type="file" name="video-upload" accept="video/*" capture="camcorder">
+    <input id="input" type="file" name="text-upload" accept=".doc,.docx,.txt,.html"> -->
+
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+
+</body>
