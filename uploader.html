@@ -178,63 +178,54 @@
       var self = {},
           _private = {};
 
-      // private IDs and Classes 
-
       // init
-      self.init = function () {
+      self.init = function (filetype) {
         $(document).ready(function() {
-          createModalHeader();
+          createModalHeader(filetype);
         });
-        $(document).on('click', opts.selectFileSelector, _private.createSelectFileSection);
+        $(document).on('click', opts.selectFileSelector, function() {
+          _private.createSelectFileSection(filetype);
+        });
         $(document).on('change', opts.fileFieldSelector, function(event) {
-          _private.createSelectionRow();
+          _private.createSelectionRow(filetype);
           _private.collectFileData(event);
         });
-        // $(document).on('click', opts.submitFileSelector, function() {
-        //   _private.createSelectionRow();
-        // });
         $(document).on('click', opts.fullSizeImage, _private.showFullSize);
       };
 
       // public functions
-      var createModalHeader = function() {
+      var createModalHeader = function(filetype) {
         var selectHeader = $('#js-create-header');
         var selectHeaderTemplate = _.template(selectHeader.text());
         console.log(selectHeaderTemplate);
         $(selectHeader).html(selectHeaderTemplate(
-          {filetype: "image"}
+          {filetype: filetype}
         ));
         console.log('Create Modal Header function working!');
       }
 
       // private functions
       // create select file section
-      _private.createSelectFileSection = function() {
+      _private.createSelectFileSection = function(filetype) {
         var selectFileRow = $('#js-select-file-section');
         var fileRow = $('#select-file-section');
         var selectFileTemplate = _.template(selectFileRow.text());
         $(fileRow).html(selectFileTemplate(
-          {filetype: "image"}
+          {filetype: filetype}
         ));
         console.log('Create File Section function working!');
       }  
   
       // create selection row
-      _private.createSelectionRow = function() {
+      _private.createSelectionRow = function(filetype) {
         var selectionRow = $('#js-selected-media-section');
         var mediaRow = $('#selected-media-section');
         var selectionTemplate = _.template(selectionRow.text());
         $(mediaRow)
           .addClass("spacing")
           .html(selectionTemplate(
-            {filetype: "image"}
+            {filetype: filetype}
             ));
-        $('#js-full-image').on('click', function() {
-          // alert("Full Sized Image");
-          var image = $('#js-output-file');
-          console.log(image);
-          // window.open();
-        });
         console.log('Scoped Selection Section function working!');
       }
 
@@ -289,7 +280,7 @@
         progressBarSelector: "#js-file-progress",
         readyTextSelector: "#js-file-ready-text",
       });
-      mediaUploader.init();
+      mediaUploader.init("audio");
     })
 
   </script>
