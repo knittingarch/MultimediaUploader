@@ -30,9 +30,9 @@
     }
     .select-file {
       display: inline-block;
-      color: #ffffff;
-      background-color: #004ebc;
-      border: 1px solid #0043a3;
+      color: #fff;
+      background-color: #2e558c;
+      border: 1px solid #254674;
       border-radius: 3px;
       font-weight: normal;
       cursor: pointer;
@@ -44,6 +44,7 @@
     #select-file-section {
     }
     #media-data-section {
+      padding-left: -30px;
     }
     .hide {
       visibility: hidden;
@@ -58,8 +59,8 @@
     }
     .file-data {
       display: inline-block;
-      background-color: green;
-      border: 1px solid black;
+      background-color: #a3d8a3;
+      border: 1px solid #82c982;
       border-radius: 3px;
       color: white;
       height: 40px;
@@ -68,7 +69,7 @@
       height: 30px;
     }
     .ready-text {
-      color: green;
+      color: #a3d8a3;
     }
     .js-current-label {
       text-align: right;
@@ -95,7 +96,6 @@
     <p>
       <button type="button" class="btn btn-primary" id="js-select-file" data-target="#upload-file" data-toggle="modal">Upload File</button>
     </p>
-
 
     <!-- modal header -->
     <div class="modal fade" id="upload-file" role="dialog">
@@ -154,11 +154,11 @@
                   <img id="js-output-file"/>
                 </div>
                 <div id="js-current-btn" class="col-sm-4">
-                  <button id="js-full-image" class="button btn-sm">View Full Size</button>
+                  <button id="js-full-image" class="button btn-sm"><a href="#">View Full Size</a></button>
                 </div>
               </script>
             </div>
-          </div>
+          </div><!-- close modal-body -->
 
           <div class="modal-footer">
             <!-- <span class="glyphicon glyphicon-cloud-upload"></span> -->
@@ -166,10 +166,10 @@
             <input type="button" value="Close" class="btn btn-sm btn-default" data-dismiss="modal">
           </div>
 
-        </div>
-      </div>
-    </div>
-  </div>
+        </div><!-- close modal-content -->
+      </div><!-- close modal-dialog -->
+    </div><!-- close modal -->
+  </div><!-- close container -->
 
   <script>
     var MultimediaUploader = function(opts) {
