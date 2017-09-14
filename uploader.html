@@ -180,14 +180,20 @@
 
       // init
       self.init = function (filetype) {
+        var mediaTypes = [
+          {'image': {'text': 'image', 'glyphicon': 'glyphicon glyphicon-picture'}, 'audio': {'text': 'audio', 'glyphicon': 'glyphicon glyphicon-volume-up'}, 'video': {'text': 'video', 'glyphicon': 'glyphicon glyphicon-facetime-video'}, 'video-inline': {'text': 'video-inline', 'glyphicon': 'glyphicon glyphicon-play'}, 'expanded-audio': {'text': 'expanded-audio', 'glyphicon': 'glyphicon glyphicon-volume-up'},
+          }
+        ];
+        var mediaType = mediaTypes[0][filetype];
+
         $(document).ready(function() {
-          createModalHeader(filetype);
+          createModalHeader(mediaType['text']);
         });
         $(document).on('click', opts.selectFileSelector, function() {
-          _private.createSelectFileSection(filetype);
+          _private.createSelectFileSection(mediaType['text']);
         });
         $(document).on('change', opts.fileFieldSelector, function(event) {
-          _private.createSelectionRow(filetype);
+          _private.createSelectionRow(mediaType['text']);
           _private.collectFileData(event);
         });
         $(document).on('click', opts.fullSizeImage, _private.showFullSize);
@@ -197,7 +203,6 @@
       var createModalHeader = function(filetype) {
         var selectHeader = $('#js-create-header');
         var selectHeaderTemplate = _.template(selectHeader.text());
-        console.log(selectHeaderTemplate);
         $(selectHeader).html(selectHeaderTemplate(
           {filetype: filetype}
         ));
