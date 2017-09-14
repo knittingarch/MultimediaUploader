@@ -229,6 +229,12 @@
           .html(selectionTemplate(
             {filetype: "image"}
             ));
+        $('#js-full-image').on('click', function() {
+          // alert("Full Sized Image");
+          var image = $('#js-output-file');
+          console.log(image);
+          // window.open();
+        });
         console.log('Scoped Selection Section function working!');
       }
 
