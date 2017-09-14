@@ -18,15 +18,14 @@
       top: 15px;
       right: 15px;
     }
+    #select-file-section {
+      padding-top: 15px;
+    }
     .select-label {
-      /*background-color: lightcoral;*/
       text-align: right;
       font-size: 12px;
       font-weight: bold;
       padding-top: 7px;
-    }
-    .select-btn {
-      /*background-color: darkcyan;*/
     }
     .select-file {
       display: inline-block;
@@ -36,26 +35,16 @@
       border-radius: 3px;
       font-weight: normal;
       cursor: pointer;
-      /*background-color: mediumturquoise;*/
-    }
-    #current {
-      /*background-color: rebeccapurple;*/
-    }
-    #select-file-section {
     }
     #media-data-section {
-      padding-left: -30px;
-    }
-    .hide {
-      visibility: hidden;
+      padding-left: 9px;
     }
     .spacing {
-      padding-top: 40px;
+      padding-top: 30px;
     }
     .file-data,
-    .file-progress,
     .ready-text {
-      font-size: 0.85em;
+      font-size: 12px;
     }
     .file-data {
       display: inline-block;
@@ -64,23 +53,22 @@
       border-radius: 3px;
       color: white;
       height: 40px;
+
     }
-    progress[value] {
+/*    progress[value] {
       height: 30px;
-    }
+    }*/
     .ready-text {
       color: #a3d8a3;
     }
-    .js-current-label {
+    .current-label {
       text-align: right;
       font-size: 0.85em;
       font-weight: bold;
       padding: 12px 0;
-      /*background-color: darkkhaki;*/
     }
-    .js-current-preview {
+    .current-preview {
       padding-bottom: 20px;
-      /*background-color: lightsalmon;*/
     }
     #js-output-file {
       max-width:150px;
@@ -97,7 +85,7 @@
       <button type="button" class="btn btn-primary" id="js-select-file" data-target="#upload-file" data-toggle="modal">Upload File</button>
     </p>
 
-    <!-- modal header -->
+    <!-- create modal -->
     <div class="modal fade" id="upload-file" role="dialog">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -121,7 +109,7 @@
                   Select new <%= filetype %>
                 </div>
                 <div class="select-btn col-sm-4">
-                  <label for="js-file-upload" id="js-file-upload-label"class="select-file button btn-sm">
+                  <label for="js-file-upload" id="js-file-upload-label" class="select-file button btn-sm">
                     Select File
                   </label>
                   <input id="js-file-upload" type="file" accept="image/*" capture="camera" style="visibility:hidden;">
@@ -136,7 +124,7 @@
                   <span class="glyphicon glyphicon-ok"></span> <%= fileName %> [<%= fileSize %>] MB
                 </div>
                 <div id="js-file-progress" class="row">
-                  <progress class="col-sm-11" value="10000" max="<%= fileSize %>"></progress>
+                  <progress class="col-sm-11" value=0 max=<%= fileSize %>></progress>
                 </div>
                 <div id="js-file-ready-text" class="ready-text row">
                   Ready to upload. Click <strong>Begin Upload</strong> to start.
@@ -147,10 +135,10 @@
             <!-- selection section container -->
             <div id="js-selected-media-section">
               <script type="text/html">
-                <div id="js-current-label" class="js-current-label col-sm-4">
+                <div id="js-current-label" class="current-label col-sm-4">
                   Current <%= filetype %>
                 </div>
-                <div id="js-current-preview" class="js-current-preview col-sm-4">
+                <div id="js-current-preview" class="current-preview col-sm-4">
                   <img id="js-output-file"/>
                 </div>
                 <div id="js-current-btn" class="col-sm-4">
@@ -178,7 +166,6 @@
       var self = {},
           _private = {};
 
-      // init
       self.init = function (filetype) {
         var mediaTypes = [
           {'image': {'text': 'image', 'glyphicon': 'glyphicon glyphicon-picture'}, 'audio': {'text': 'audio', 'glyphicon': 'glyphicon glyphicon-volume-up'}, 'video': {'text': 'video', 'glyphicon': 'glyphicon glyphicon-facetime-video'}, 'video-inline': {'text': 'video-inline', 'glyphicon': 'glyphicon glyphicon-play'}, 'expanded-audio': {'text': 'expanded-audio', 'glyphicon': 'glyphicon glyphicon-volume-up'},
@@ -196,7 +183,7 @@
           _private.createSelectionRow(mediaType['text']);
           _private.collectFileData(event);
         });
-        $(document).on('click', opts.fullSizeImage, _private.showFullSize);
+        // $(document).on('click', opts.fullSizeImage, _private.showFullSize);
       };
 
       // public functions
@@ -206,7 +193,6 @@
         $(selectHeader).html(selectHeaderTemplate(
           {filetype: filetype}
         ));
-        console.log('Create Modal Header function working!');
       }
 
       // private functions
@@ -218,7 +204,6 @@
         $(fileRow).html(selectFileTemplate(
           {filetype: filetype}
         ));
-        console.log('Create File Section function working!');
       }  
   
       // create selection row
@@ -231,7 +216,6 @@
           .html(selectionTemplate(
             {filetype: filetype}
             ));
-        console.log('Scoped Selection Section function working!');
       }
 
       // get data from file selector
@@ -247,13 +231,11 @@
           'name': file.name,
           'size': file.size,
         };
-        console.log('Scoped Collect File Data function working!');
         _private.createSelectFileElements(attributes);
       }
 
       // show data, progress bar, and ready text
       _private.createSelectFileElements = function(attributes) {
-        console.log('Scoped Upload File Data function working!');
         var fileName = attributes["name"];
         var fileSize = attributes["size"];
         var dataRow = $('#js-media-data-section');
@@ -261,15 +243,10 @@
         var dataTemplate = _.template(dataRow.text());
         $(mediaData).html(dataTemplate(
           {fileName: fileName,
-           fileSize: fileSize,
-           filetype: "image"}
+           fileSize: fileSize}
           ));
       }
 
-      // open full sized image in new browser window
-      _private.showFullSize = function() {
-        console.log('Scoped Full Size Image function working!');
-      }
       return self;
     }
 
@@ -285,7 +262,7 @@
         progressBarSelector: "#js-file-progress",
         readyTextSelector: "#js-file-ready-text",
       });
-      mediaUploader.init("audio");
+      mediaUploader.init('image');
     })
 
   </script>
