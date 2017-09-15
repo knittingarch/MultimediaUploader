@@ -192,6 +192,9 @@
           _private.createSelectionRow(mediaType['text']);
           _private.collectFileData(event);
         });
+        $(document).on('click', opts.fullSizeImage, function(image) {
+          _private.showFullSize(image);
+        });
       };
 
       // public functions
@@ -233,15 +236,25 @@
         reader.onload = function() {
           image = $('#js-output-file')[0];
           image.src = reader.result;
-
         }
         var file = event.target.files[0];
         reader.readAsDataURL(file);
+        
         var attributes = {
           'name': file.name,
           'size': file.size,
         };
         _private.createSelectFileElements(attributes);
+      }
+
+      _private.showFullSize = function(event) {
+        var image = event.target.files[0];
+        if (image) {
+          console.log(image);
+          window.open('http://www.dogster.com/wp-content/uploads/2016/07/shutterstock_90574015-600x368.jpg');
+        } else {
+          alert('no image');
+        }
       }
 
       // show data, progress bar, and ready text
