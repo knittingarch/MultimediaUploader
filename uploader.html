@@ -43,7 +43,6 @@
       padding-left: 5px;
     }
     .file-data,
-    .progress-bar,
     .ready-text {
       font-size: 12px;
       border-radius: 3px;
@@ -52,6 +51,7 @@
     .file-data {
       display: inline-block;
       height: 40px;
+      margin-bottom: 3px;
       background-color: #a3d8a3;
       border: 1px solid #82c982;
       color: white;
@@ -67,7 +67,7 @@
     .current-preview {
       padding-bottom: 20px;
     }
-    #js-output-file {
+    .output-image {
       max-width: 150px;
       max-height: 150px;
     }
@@ -78,9 +78,6 @@
   }
     #js-current-btn {
       line-height: 7;
-    }
-    .modal-footer {
-      padding-right: 31px;
     }
   </style>
 </head>
@@ -108,7 +105,7 @@
           <div class="modal-body">
             <div id="select-file-section" class="row"></div>
             <div id="selected-media-section" class="row col-sm-12"></div>
-            <div id="media-data-section" class="row col-sm-8 pull-right"></div>
+            <div id="media-data-section" class="row col-sm-8 col-sm-offset-4"></div>
 
             <!-- select new file -->
             <div id="js-select-file-section">
@@ -129,7 +126,7 @@
             <div id="js-media-data-section" class="container">
               <script type="text/html">
                 <div id="js-file-data" class="file-data row col-sm-12">
-                  <span class="glyphicon glyphicon-ok"></span> <%= fileName %> [<%= fileSize %>] MB
+                  <i class="fa fa-check"></i> <%= fileName %> [<%= fileSize %>] MB
                 </div>
                 <div id="js-file-progress" class="row">
                   <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="100" aria-valuemax="100">actual progress goes here
@@ -148,7 +145,7 @@
                   Current <%= filetype %>
                 </div>
                 <div id="js-current-preview" class="current-preview col-sm-4">
-                  <img id="js-output-file"/>
+                  <img id="js-output-file" class="output-image"/>
                 </div>
                 <div id="js-current-btn" class="col-sm-4">
                   <button id="js-full-image" class="btn btn-sm btn-default">View Full Size</button>
@@ -158,8 +155,8 @@
           </div><!-- close modal-body -->
 
           <div class="modal-footer">
-            <input type="button" value="Close" class="btn btn-sm btn-default" data-dismiss="modal">
-            <!-- <span class="glyphicon glyphicon-cloud-upload"></span> -->
+            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
+            <!-- <i class="fa fa-cloud-upload"></i> -->
             <input id="submit-file" class="btn btn-sm btn-default" type="submit" value="Begin Upload"> 
           </div>
 
@@ -170,19 +167,36 @@
 
   <script>
     var MultimediaUploader = function(opts) {
-      'use strict';
-
       var self = {},
           _private = {};
+      'use strict';
 
       self.init = function (filetype) {
-        var mediaTypes = [
-          {'image': {'text': 'image', 'glyphicon': 'glyphicon glyphicon-picture'}, 'audio': {'text': 'audio', 'glyphicon': 'glyphicon glyphicon-volume-up'}, 'video': {'text': 'video', 'glyphicon': 'glyphicon glyphicon-facetime-video'}, 'video-inline': {'text': 'video-inline', 'glyphicon': 'glyphicon glyphicon-play'}, 'expanded-audio': {'text': 'expanded-audio', 'glyphicon': 'glyphicon glyphicon-volume-up'},
-          }
-        ];
-        var mediaType = mediaTypes[0][filetype];
+        var mediaTypes = {
+          'image': {
+            'text': 'image',
+            'icon': 'fa fa-photo'
+          }, 
+          'audio': {
+            'text': 'audio',
+            'icon': 'fa fa-volume-up'
+          },
+          'video': {
+            'text': 'video',
+            'icon': 'fa fa-video-camera'
+          },
+          'video-inline': {
+            'text': 'video-inline',
+            'icon': 'fa fa-play'
+          },
+          'expanded-audio': {
+            'text': 'expanded-audio',
+            'icon': 'fa fa-volume-up'
+          },
+        };
+        var mediaType = mediaTypes[filetype];
 
-        $(document).ready(function() {
+        $(function() {
           createModalHeader(mediaType['text']);
         });
         $(document).on('click', opts.selectFileSelector, function() {
@@ -201,9 +215,9 @@
       var createModalHeader = function(filetype) {
         var selectHeader = $('#js-create-header');
         var selectHeaderTemplate = _.template(selectHeader.text());
-        $(selectHeader).html(selectHeaderTemplate(
-          {filetype: filetype}
-        ));
+        $(selectHeader).html(selectHeaderTemplate({
+          filetype: filetype,
+        }));
       }
 
       // private functions
@@ -212,9 +226,9 @@
         var selectFileRow = $('#js-select-file-section');
         var fileRow = $('#select-file-section');
         var selectFileTemplate = _.template(selectFileRow.text());
-        $(fileRow).html(selectFileTemplate(
-          {filetype: filetype}
-        ));
+        $(fileRow).html(selectFileTemplate({
+          filetype: filetype,
+        }));
       }  
   
       // create selection row
@@ -224,9 +238,9 @@
         var selectionTemplate = _.template(selectionRow.text());
         $(mediaRow)
           .addClass("spacing")
-          .html(selectionTemplate(
-            {filetype: filetype}
-            ));
+          .html(selectionTemplate({
+            filetype: filetype,
+          }));
       }
 
       // get data from file selector
@@ -264,10 +278,10 @@
         var dataRow = $('#js-media-data-section');
         var mediaData = $('#media-data-section');
         var dataTemplate = _.template(dataRow.text());
-        $(mediaData).html(dataTemplate(
-          {fileName: fileName,
-           fileSize: fileSize}
-          ));
+        $(mediaData).html(dataTemplate({
+          fileName: fileName,
+          fileSize: fileSize,
+         }));
       }
 
       return self;
